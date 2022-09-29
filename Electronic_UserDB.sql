@@ -22,6 +22,7 @@ as
 begin
 update UserDB set username=@username, password=@password,active=@active where userId=@userId
 end
+
 drop procedure usp_UpdateUser
 execute usp_UpdateUser 1,'user4','12356742',1
 
