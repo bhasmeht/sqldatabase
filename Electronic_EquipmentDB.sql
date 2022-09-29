@@ -1,4 +1,4 @@
----- Equipment Database -------
+---- Equipment Database   -------
 
 create table EquipmentDB(EquipmentId int primary key identity(1,1), EquipmentName varchar(20), PartId varchar(20),
 EquipmentGroupId int foreign key references EquipmentGroup
