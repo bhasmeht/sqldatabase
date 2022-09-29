@@ -1,7 +1,7 @@
 create table UserDB(userId int primary key identity(1,1),username varchar(20) unique,
 password varchar(20) CONSTRAINT CK_Users_PasswordLength CHECK(LEN([password]) >= 8) , active BIT)
 insert into UserDB values('user1', 123456789, 1)
-select * from UserDB
+select * from  UserDB
 drop table UserDB
 
 --Creating the User 
@@ -22,6 +22,7 @@ as
 begin
 update UserDB set username=@username, password=@password,active=@active where userId=@userId
 end
+
 drop procedure usp_UpdateUser
 execute usp_UpdateUser 1,'user4','12356742',1
 
