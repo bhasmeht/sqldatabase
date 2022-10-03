@@ -4,11 +4,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System.Data.SqlClient;
 using System.Data;
+using Microsoft.AspNetCore.Cors;
 
 namespace ElectronicEquipment.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
+    [EnableCors("AllowOrigin")]
     public class UserController : ControllerBase
     {
         private readonly IConfiguration _configuration;
@@ -17,8 +19,8 @@ namespace ElectronicEquipment.Controllers
             _configuration = configuration;
         }
 
-        [HttpPost]
-        [Route("adduser")]
+        [HttpPost("adduser")]
+        
         public int AddUser(Users users)
         {
             SqlConnection con = new SqlConnection(_configuration.GetConnectionString("Database").ToString());
@@ -36,8 +38,8 @@ namespace ElectronicEquipment.Controllers
             return (int)UserId.Value;
         }
 
-        [HttpPost]
-        [Route("updateuser/{userId}")]
+        [HttpPut]
+        [Route("updateuser")]
         public void UpdateUser(Users users)
         {
             SqlConnection con = new SqlConnection(_configuration.GetConnectionString("Database").ToString());
@@ -52,7 +54,13 @@ namespace ElectronicEquipment.Controllers
             con.Close();
 
         }
-        
+
+        [Route("gethere")]
+        public string Get()
+        {
+            return "Hello";
+        }
+
 
     }
 }

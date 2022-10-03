@@ -13,6 +13,7 @@
         public string EquipmentName { get; set; }
         public string PartId { get; set; }
         public int EquipmentGroupId { get; set; }
+        public int EquipmentCategoryId { get; set; }
     }
 
     public class EquipmentGroup
