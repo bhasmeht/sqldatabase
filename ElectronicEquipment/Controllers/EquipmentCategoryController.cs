@@ -32,6 +32,8 @@ namespace ElectronicEquipment.Controllers
             return Ok(_context.EquipmentCategories.ToList());
         }
 
+
+
         [HttpPost("addequipmentcategory")]
         public IActionResult Add(EquipmentCategory equipmentCategory)
         {

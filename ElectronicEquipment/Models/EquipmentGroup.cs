@@ -9,8 +9,5 @@ namespace ElectronicEquipment.Models
 
         public int? EquipmentCategoryId { get; set; } // Foreign key
         public EquipmentCategory EquipmentCategory { get; set; } //// Reference navigation
-        
-        
-
     }
 }

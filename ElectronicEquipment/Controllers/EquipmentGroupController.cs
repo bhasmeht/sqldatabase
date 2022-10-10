@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -23,10 +24,14 @@ namespace ElectronicEquipment.Controllers
             _context = context;
         }
 
-        [HttpGet("getequipmentgroup")]
-        public IActionResult Get()
+        
+
+        [HttpGet("getequipmentcategorybygroupid/{id}")]
+        public IActionResult GetequipmentGroupbyId(int id)
         {
-            return Ok(_context.EquipmentGroups.ToList());
+            var equipmentCategoryList = _context.EquipmentGroups.Where(u => u.EquipmentCategoryId == id)
+                .Select(a => new { a.EquipmentGroupId, a.EquipmentGroupName });
+            return Ok(equipmentCategoryList);
         }
 
         [HttpPost("addequipmentgroup")]
