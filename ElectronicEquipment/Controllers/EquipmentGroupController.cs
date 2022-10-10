@@ -1,67 +1,142 @@
 ﻿using ElectronicEquipment.Models;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 
 namespace ElectronicEquipment.Controllers
 {
-    [Route("[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
+    [EnableCors("AllowOrigin")]
     public class EquipmentGroupController : ControllerBase
     {
         private readonly IConfiguration _configuration;
-        public EquipmentGroupController(IConfiguration configuration)
+        public readonly UserContext _context;
+        public EquipmentGroupController(IConfiguration configuration, UserContext context)
         {
             _configuration = configuration;
+            _context = context;
         }
 
-        [HttpPost]
-        [Route("addequipmentgroup")]
-        public int AddEquipmentGroup(EquipmentGroup equipmentgroup)
+        [HttpGet("getequipmentgroup")]
+        public IActionResult Get()
         {
-            SqlConnection con = new SqlConnection(_configuration.GetConnectionString("Database").ToString());
-            con.Open();
-            SqlCommand cmd = new SqlCommand("usp_AddEquipmentGroup", con);
-            cmd.CommandType = CommandType.StoredProcedure;
-            SqlParameter EquipmentsGroupId = new SqlParameter("@EquipmentGroupId", SqlDbType.Int);
-            EquipmentsGroupId.Direction = ParameterDirection.Output;
-            cmd.Parameters.AddWithValue("@EquipmentGroupId", equipmentgroup.EquipmentGroupId);
-            cmd.Parameters.AddWithValue("@EquipmentGroupName", equipmentgroup.EquipmentGroupName);
-            cmd.Parameters.AddWithValue("@EquipmentCategoryId", equipmentgroup.EquipmentCategoryId);
-            cmd.ExecuteNonQuery();
-            con.Close();
-            return (int)EquipmentsGroupId.Value;
+            return Ok(_context.EquipmentGroups.ToList());
         }
 
-        [HttpPost]
-        [Route("updateequipmentgroup/{EquipmentGroupId}")]
-        public void UpdateEquipment(EquipmentGroup equipmentgroup)
+        [HttpPost("addequipmentgroup")]
+        public IActionResult Add(EquipmentGroup equipmentGroup)
         {
-            SqlConnection con = new SqlConnection(_configuration.GetConnectionString("Database").ToString());
-            con.Open();
-            SqlCommand cmd = new SqlCommand("usp_UpdateEquipmentGroup", con);
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@EquipmentGroupId", equipmentgroup.EquipmentGroupId);
-            cmd.Parameters.AddWithValue("@EquipmentGroupName", equipmentgroup.EquipmentGroupName);
-            cmd.Parameters.AddWithValue("@EquipmentCategoryId", equipmentgroup.EquipmentCategoryId);
-            cmd.ExecuteNonQuery();
-            con.Close();
-
+            if (_context.EquipmentGroups.Where(u => u.EquipmentGroupName == equipmentGroup.EquipmentGroupName).FirstOrDefault() != null)
+            {
+                return Ok("EquipmentGroup Exist");
+            }
+            _context.EquipmentGroups.Add(equipmentGroup);
+            _context.SaveChanges();
+            return Ok("Success");
         }
 
-        [HttpDelete]
-        [Route("deleteequipmentgroup/{EquipmentGroupId}")]
-        public void DeleteEquipment(int equipmentGroupId)
+
+
+        [HttpPut("updateequipmentgroup")]
+        public IActionResult UpdateEquipmentCategory(EquipmentGroup equipmentGroup)
         {
-            SqlConnection con = new SqlConnection(_configuration.GetConnectionString("Database").ToString());
-            con.Open();
-            SqlCommand cmd = new SqlCommand("usp_DeleteEquipmentGroup", con);
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@EquipmentGroupId", equipmentGroupId);
-            cmd.ExecuteNonQuery();
-            con.Close();
+            var equipmentGroups = _context.EquipmentGroups.Where(u => u.EquipmentGroupId == equipmentGroup.EquipmentGroupId).FirstOrDefault();
+            if (equipmentGroups == null)
+            {
+                return Ok("EquipmentGroup Not Available");
+            }
+
+            equipmentGroups.EquipmentGroupName = equipmentGroup.EquipmentGroupName;
+            equipmentGroups.EquipmentCategoryId = equipmentGroup.EquipmentCategoryId;
+
+            _context.Update(equipmentGroups);
+            _context.SaveChanges();
+            return Ok("Success");
+
         }
+
+        [HttpDelete("deleteequipmentgroup/{id}")]
+        public IActionResult DeleteEquipmentGroup(int id)
+        {
+            var equipmentGroups = _context.EquipmentGroups.Where(u => u.EquipmentGroupId == id).FirstOrDefault();
+            if (equipmentGroups == null)
+            {
+                return Ok("EquipmentGroup Not Available");
+            }
+            _context.EquipmentGroups.Remove(equipmentGroups);
+            _context.SaveChanges();
+            return Ok("Success");
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //[HttpPost]
+        //[Route("addequipmentgroup")]
+        //public int AddEquipmentGroup(EquipmentGroup equipmentgroup)
+        //{
+        //    SqlConnection con = new SqlConnection(_configuration.GetConnectionString("Database").ToString());
+        //    con.Open();
+        //    SqlCommand cmd = new SqlCommand("usp_AddEquipmentGroup", con);
+        //    cmd.CommandType = CommandType.StoredProcedure;
+        //    SqlParameter EquipmentsGroupId = new SqlParameter("@EquipmentGroupId", SqlDbType.Int);
+        //    EquipmentsGroupId.Direction = ParameterDirection.Output;
+        //    cmd.Parameters.AddWithValue("@EquipmentGroupId", equipmentgroup.EquipmentGroupId);
+        //    cmd.Parameters.AddWithValue("@EquipmentGroupName", equipmentgroup.EquipmentGroupName);
+        //    cmd.Parameters.AddWithValue("@EquipmentCategoryId", equipmentgroup.EquipmentCategoryId);
+        //    cmd.ExecuteNonQuery();
+        //    con.Close();
+        //    return (int)EquipmentsGroupId.Value;
+        //}
+
+        //[HttpPut]
+        //[Route("updateequipmentgroup")]
+        //public void UpdateEquipment(EquipmentGroup equipmentgroup)
+        //{
+        //    SqlConnection con = new SqlConnection(_configuration.GetConnectionString("Database").ToString());
+        //    con.Open();
+        //    SqlCommand cmd = new SqlCommand("usp_UpdateEquipmentGroup", con);
+        //    cmd.CommandType = CommandType.StoredProcedure;
+        //    cmd.Parameters.AddWithValue("@EquipmentGroupId", equipmentgroup.EquipmentGroupId);
+        //    cmd.Parameters.AddWithValue("@EquipmentGroupName", equipmentgroup.EquipmentGroupName);
+        //    cmd.Parameters.AddWithValue("@EquipmentCategoryId", equipmentgroup.EquipmentCategoryId);
+        //    cmd.ExecuteNonQuery();
+        //    con.Close();
+
+        //}
+
+        //[HttpDelete]
+        //[Route("deleteequipmentgroup/{EquipmentGroupId}")]
+        //public void DeleteEquipment(int equipmentGroupId)
+        //{
+        //    SqlConnection con = new SqlConnection(_configuration.GetConnectionString("Database").ToString());
+        //    con.Open();
+        //    SqlCommand cmd = new SqlCommand("usp_DeleteEquipmentGroup", con);
+        //    cmd.CommandType = CommandType.StoredProcedure;
+        //    cmd.Parameters.AddWithValue("@EquipmentGroupId", equipmentGroupId);
+        //    cmd.ExecuteNonQuery();
+        //    con.Close();
+        //}
     }
 }
