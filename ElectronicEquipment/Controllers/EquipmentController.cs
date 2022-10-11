@@ -24,6 +24,12 @@ namespace ElectronicEquipment.Controllers
         }
 
 
+        [HttpGet("getequipment")]
+        public IActionResult Get()
+        {
+            return Ok(_context.Equipment.ToList().Select(a => new { a.EquipmentId, a.EquipmentName }));
+        }
+
         [HttpPost("addequipment")]
         public IActionResult Add(Equipments equipments)
         {
@@ -63,7 +69,7 @@ namespace ElectronicEquipment.Controllers
             var equipment = _context.Equipment.Where(u => u.EquipmentId == id).FirstOrDefault();
             if (equipment == null)
             {
-                return Ok("EquipmentCategory Not Available");
+                return Ok("Equipment Not Available");
             }
             _context.Equipment.Remove(equipment);
             _context.SaveChanges();
@@ -71,72 +77,18 @@ namespace ElectronicEquipment.Controllers
 
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        //public int AddEquipment(Equipments equipments)
+        //[HttpDelete("deleteequipment")]
+        //public IActionResult DeleteEquipmentCategory(DeleteEquipment deleteEquipment)
         //{
-        //    SqlConnection con = new SqlConnection(_configuration.GetConnectionString("Database").ToString());
-        //    con.Open();
-        //    SqlCommand cmd = new SqlCommand("usp_AddEquipment", con);
-        //    cmd.CommandType = CommandType.StoredProcedure;
-        //    SqlParameter EquipmentsId = new SqlParameter("@EquipmentId", SqlDbType.Int);
-        //    EquipmentsId.Direction = ParameterDirection.Output;
-        //    cmd.Parameters.AddWithValue("@EquipmentId", equipments.EquipmentId);
-        //    cmd.Parameters.AddWithValue("@EquipmentName", equipments.EquipmentName);
-        //    cmd.Parameters.AddWithValue("@PartId", equipments.PartId);
-        //    cmd.Parameters.AddWithValue("@EquipmentGroupId", equipments.EquipmentGroupId);
-        //    cmd.Parameters.AddWithValue("@EquipmentCategoryId", equipments.EquipmentCategoryId);
-        //    cmd.ExecuteNonQuery();
-        //    con.Close();
-        //    return (int)EquipmentsId.Value;
-        //}
+        //    var equipment = _context.Equipment.Where(u => u.EquipmentName == deleteEquipment.EquipmentName).FirstOrDefault();
+        //    if (equipment == null)
+        //    {
+        //        return Ok("Equipment Not Available");
+        //    }
+        //    _context.Equipment.Remove(equipment);
+        //    _context.SaveChanges();
+        //    return Ok("Success");
 
-        //[HttpPut]
-        //[Route("updateequipment")]
-        //public void UpdateEquipment(Equipments equipments)
-        //{
-        //    SqlConnection con = new SqlConnection(_configuration.GetConnectionString("Database").ToString());
-        //    con.Open();
-        //    SqlCommand cmd = new SqlCommand("usp_UpdateEquipment", con);
-        //    cmd.CommandType = CommandType.StoredProcedure;
-        //    cmd.Parameters.AddWithValue("@EquipmentId", equipments.EquipmentId);
-        //    cmd.Parameters.AddWithValue("@EquipmentName", equipments.EquipmentName);
-        //    cmd.Parameters.AddWithValue("@PartId", equipments.PartId);
-        //    cmd.Parameters.AddWithValue("@EquipmentGroupId", equipments.EquipmentGroupId);
-        //    cmd.Parameters.AddWithValue("@EquipmentCategoryId", equipments.EquipmentCategoryId);
-        //    cmd.ExecuteNonQuery();
-        //    con.Close();
-
-        //}
-
-
-
-        //[HttpDelete]
-        //[Route("deleteequipment/{EquipmentId}")]
-        //public void DeleteEquipment(int equipmentId)
-        //{
-        //    SqlConnection con = new SqlConnection(_configuration.GetConnectionString("Database").ToString());
-        //    con.Open();
-        //    SqlCommand cmd = new SqlCommand("usp_DeleteEquipment", con);
-        //    cmd.CommandType = CommandType.StoredProcedure;
-        //    cmd.Parameters.AddWithValue("@EquipmentId", equipmentId);
-        //    cmd.ExecuteNonQuery ();
-        //    con.Close();
         //}
     }
 }

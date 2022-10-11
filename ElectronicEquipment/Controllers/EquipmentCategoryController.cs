@@ -46,7 +46,7 @@ namespace ElectronicEquipment.Controllers
             return Ok("Success");
         }
 
-        
+
 
         [HttpPut("updateequipmentcategory")]
         public IActionResult UpdateEquipmentCategory(EquipmentCategory equipmentCategory)
@@ -58,7 +58,7 @@ namespace ElectronicEquipment.Controllers
             }
 
             equipmentCategories.EquipmentCategoryName = equipmentCategory.EquipmentCategoryName;
-            
+
             _context.Update(equipmentCategories);
             _context.SaveChanges();
             return Ok("Success");
@@ -78,77 +78,5 @@ namespace ElectronicEquipment.Controllers
             return Ok("Success");
 
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        //[HttpPost]
-        //[Route("addequipmentcategory")]
-        //public int AddEquipmentGroup(EquipmentCategory equipmentcategory)
-        //{
-        //    SqlConnection con = new SqlConnection(_configuration.GetConnectionString("Database").ToString());
-        //    con.Open();
-        //    SqlCommand cmd = new SqlCommand("usp_AddEquipmentCategory", con);
-        //    cmd.CommandType = CommandType.StoredProcedure;
-        //    SqlParameter EquipmentsCategoryId = new SqlParameter("@EquipmentCategoryId", SqlDbType.Int);
-        //    EquipmentsCategoryId.Direction = ParameterDirection.Output;
-        //    cmd.Parameters.AddWithValue("@EquipmentCategoryId", equipmentcategory.EquipmentCategoryId);
-        //    cmd.Parameters.AddWithValue("@EquipmentCategoryName", equipmentcategory.EquipmentCategoryName);
-
-        //    cmd.ExecuteNonQuery();
-        //    con.Close();
-        //    return (int)EquipmentsCategoryId.Value;
-        //}
-
-        //[HttpPut]
-        //[Route("updateequipmentcategory")]
-        //public void UpdateEquipment([FromRoute] Guid id,  EquipmentCategory equipmentcategory)
-        //{
-        //    SqlConnection con = new SqlConnection(_configuration.GetConnectionString("Database").ToString());
-        //    con.Open();
-        //    SqlCommand cmd = new SqlCommand("usp_UpdateEquipmentCategory", con);
-        //    cmd.CommandType = CommandType.StoredProcedure;
-        //    cmd.Parameters.AddWithValue("@EquipmentCategoryId", equipmentcategory.EquipmentCategoryId);
-        //    cmd.Parameters.AddWithValue("@EquipmentCategoryName", equipmentcategory.EquipmentCategoryName);
-
-        //    cmd.ExecuteNonQuery();
-        //    con.Close();
-
-        //}
-
-        //[HttpDelete]
-        //[Route("deleteequipmentcategory/{EquipmentCategoryId}")]
-        //public void DeleteEquipment(int equipmentCategoryId)
-        //{
-        //    SqlConnection con = new SqlConnection(_configuration.GetConnectionString("Database").ToString());
-        //    con.Open();
-        //    SqlCommand cmd = new SqlCommand("usp_DeleteEquipmentCategory", con);
-        //    cmd.CommandType = CommandType.StoredProcedure;
-        //    cmd.Parameters.AddWithValue("@EquipmentCategoryId", equipmentCategoryId);
-        //    cmd.ExecuteNonQuery();
-        //    con.Close();
-        //}
     }
 }

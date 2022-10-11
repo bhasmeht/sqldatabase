@@ -30,6 +30,10 @@ namespace ElectronicEquipment.Controllers
             {
                 return Ok("User Exist");
             }
+            else if(user.Password!=user.ConfirmPassword)
+            {
+                return Ok("Please Confirm Your Password");
+            }
             _context.Users.Add(user);
             _context.SaveChanges();
             return Ok("Success");
@@ -50,116 +54,29 @@ namespace ElectronicEquipment.Controllers
         }
 
         [HttpPut("updateuser")]
-        public IActionResult UpdateUser(User user)
+        public IActionResult UpdateUser(UpdatePassword updatePassword)
         {
-            var users=_context.Users.Where(u=>u.UserId==user.UserId).FirstOrDefault();
+            var users=_context.Users.Where(u=>u.UserName==updatePassword.UserName && u.Password==updatePassword.Password).FirstOrDefault();
             if (users == null)
             {
                 return Ok("User Not Available");
             }
+            else if(updatePassword.NewPassword!=updatePassword.ConfirmPassword)
+            {
+                return Ok("Please Confirm Your Password Correctly");
+            }
+            else
+            {
+                users.Password = updatePassword.NewPassword;
+            }
 
-            users.UserName = user.UserName;
-            users.Password = user.Password;
-            users.Active = user.Active;
+            
+            
+            
             _context.Update(users);
             _context.SaveChanges();
             return Ok("Success");
             
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-        
-        //[HttpPost]
-        //[Route("adduser")]
-        //public string AddUser([FromBody] Users users)
-        //{
-        //    SqlConnection con = new SqlConnection(_configuration.GetConnectionString("Database").ToString());
-        //    con.Open();
-        //    SqlCommand cmd = new SqlCommand("usp_AddUser", con);
-        //    cmd.CommandType = CommandType.StoredProcedure;
-        //    SqlParameter UserId = new SqlParameter("@userId",SqlDbType.Int);
-        //    UserId.Direction = ParameterDirection.Output;
-        //    cmd.Parameters.AddWithValue("@userId", users.UserId);
-        //    cmd.Parameters.AddWithValue("@username", users.UserName);
-        //    cmd.Parameters.AddWithValue("@password", users.Password);
-        //    cmd.Parameters.AddWithValue("@active", users.Active);
-        //    cmd.ExecuteNonQuery();
-        //    con.Close();
-        //    return UserId.Value.ToString();
-        //}
-
-        //[HttpPost]
-        //[Route("loginuser")]
-        //public string Login(Login login)
-        //{
-        //    SqlConnection con = new SqlConnection(_configuration.GetConnectionString("Database").ToString());
-        //    con.Open();
-        //    //var userNameStatus=con.UserDB.Contains(login.UserName);
-        //    var userNameStatus= con.Database.Contains(login.UserName);
-        //    if(userNameStatus)
-        //    {
-        //        return "Ok";
-        //    }
-
-
-        //    return "Failure";
-        //}
-        
-
-        //[HttpPut]
-        //[Route("updateuser/{id}")]
-        //public void UpdateUser( Users users)
-        //{
-        //    SqlConnection con = new SqlConnection(_configuration.GetConnectionString("Database").ToString());
-        //    con.Open();
-        //    SqlCommand cmd = new SqlCommand("usp_UpdateUser", con);
-        //    cmd.CommandType = CommandType.StoredProcedure;
-        //    //cmd.Parameters.AddWithValue("@userId", users.UserId);
-        //    if(users.UserId )
-        //    {
-        //        cmd.Parameters.AddWithValue("@username", users.UserName);
-        //        cmd.Parameters.AddWithValue("@password", users.Password);
-        //        cmd.Parameters.AddWithValue("@active", users.Active);
-        //    }
-
-            
-        //    cmd.ExecuteNonQuery();
-        //    con.Close();
-
-        //}
-
-        //[Route("gethere")]
-        //public string Get()
-        //{
-        //    return "Hello";
-        //}
-
-
     }
 }

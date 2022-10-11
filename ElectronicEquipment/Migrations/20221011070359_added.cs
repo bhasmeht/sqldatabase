@@ -2,7 +2,7 @@
 
 namespace ElectronicEquipment.Migrations
 {
-    public partial class newdbadde : Migration
+    public partial class added : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -25,8 +25,9 @@ namespace ElectronicEquipment.Migrations
                 {
                     UserId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserName = table.Column<string>(nullable: true),
-                    Password = table.Column<string>(nullable: true),
+                    UserName = table.Column<string>(nullable: false),
+                    Password = table.Column<string>(nullable: false),
+                    ConfirmPassword = table.Column<string>(nullable: false),
                     Active = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
