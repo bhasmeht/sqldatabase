@@ -72,7 +72,7 @@ namespace ElectronicEquipment.Controllers
             var equipmentGroups = _context.EquipmentGroups.Where(u => u.EquipmentGroupId == id).FirstOrDefault();
             if (equipmentGroups == null)
             {
-                return Ok("EquipmentGroup Not Available");
+                return Ok("EquipmentGroup is Not Available");
             }
             _context.EquipmentGroups.Remove(equipmentGroups);
             _context.SaveChanges();
