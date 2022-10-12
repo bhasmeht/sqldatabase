@@ -7,6 +7,7 @@ using System.Data;
 using Microsoft.AspNetCore.Cors;
 using System;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ElectronicEquipment.Controllers
 {
@@ -22,35 +23,43 @@ namespace ElectronicEquipment.Controllers
             _configuration = configuration;
             _context = context;
         }
-
+        [AllowAnonymous]
         [HttpPost("adduser")]
         public IActionResult Add(User user)
         {
             if (_context.Users.Where(u => u.UserName == user.UserName).FirstOrDefault() != null)
             {
-                return Ok("User Exist");
+                return Ok("Exist");
             }
             else if(user.Password!=user.ConfirmPassword)
             {
-                return Ok("Please Confirm Your Password");
+                return Ok("Confirm_Password");
             }
+            var userToken = new JwtService(_configuration).GenerateToken(user.UserId.ToString(), user.UserName, user.Active.ToString());
+
+                    
+                    
             _context.Users.Add(user);
             _context.SaveChanges();
-            return Ok("Success");
+            return Ok(userToken);
         }
-
+        [AllowAnonymous]
         [HttpPost("loginuser")]
         public IActionResult Login(Login login)
         {
             var user = _context.Users.Where(u=> u.UserName==login.UserName && u.Password==login.Password).FirstOrDefault();
             if (user != null)
             {
-                return Ok("Success");
+                return Ok(new JwtService(_configuration).GenerateToken(
+                    user.UserId.ToString(),
+                    user.UserName,
+                    user.Active.ToString()
+
+                    )
+                    );
             }
-            else
-            {
-                return Ok("Failure");
-            }
+            return Ok("Failure");
+            
         }
 
         [HttpPut("updateuser")]
@@ -59,20 +68,18 @@ namespace ElectronicEquipment.Controllers
             var users=_context.Users.Where(u=>u.UserName==updatePassword.UserName && u.Password==updatePassword.Password).FirstOrDefault();
             if (users == null)
             {
-                return Ok("User Not Available");
+                return Ok("EnterCorrectUserNameOrPassword");
             }
             else if(updatePassword.NewPassword!=updatePassword.ConfirmPassword)
             {
-                return Ok("Please Confirm Your Password Correctly");
+                return Ok("ConfirmPassword");
             }
             else
             {
                 users.Password = updatePassword.NewPassword;
+                users.ConfirmPassword = updatePassword.ConfirmPassword;
             }
 
-            
-            
-            
             _context.Update(users);
             _context.SaveChanges();
             return Ok("Success");

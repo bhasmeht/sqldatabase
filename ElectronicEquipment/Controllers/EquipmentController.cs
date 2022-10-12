@@ -35,7 +35,7 @@ namespace ElectronicEquipment.Controllers
         {
             if (_context.Equipment.Where(u => u.EquipmentName == equipments.EquipmentName).FirstOrDefault() != null)
             {
-                return Ok("Equipment Already Exist");
+                return Ok("EquipmentExist");
             }
             _context.Equipment.Add(equipments);
             _context.SaveChanges();

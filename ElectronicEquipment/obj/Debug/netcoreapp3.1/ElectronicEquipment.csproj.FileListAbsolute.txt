@@ -69,3 +69,6 @@ C:\Users\bhasmeht\Desktop\Electronic_Equipment\ElectronicEquipment\ElectronicEqu
 C:\Users\bhasmeht\Desktop\Electronic_Equipment\ElectronicEquipment\ElectronicEquipment\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.0\System.Runtime.Caching.dll
 C:\Users\bhasmeht\Desktop\Electronic_Equipment\ElectronicEquipment\ElectronicEquipment\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.0\System.Runtime.Caching.dll
 C:\Users\bhasmeht\Desktop\Electronic_Equipment\ElectronicEquipment\ElectronicEquipment\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
+C:\Users\bhasmeht\Desktop\Electronic_Equipment\ElectronicEquipment\ElectronicEquipment\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\bhasmeht\Desktop\Electronic_Equipment\ElectronicEquipment\ElectronicEquipment\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\bhasmeht\Desktop\Electronic_Equipment\ElectronicEquipment\ElectronicEquipment\bin\Debug\netcoreapp3.1\System.Text.Json.dll
