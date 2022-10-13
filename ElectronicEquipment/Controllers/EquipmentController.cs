@@ -46,13 +46,13 @@ namespace ElectronicEquipment.Controllers
         [HttpPut("updateequipment")]
         public IActionResult UpdateEquipmentCategory(Equipments equipments)
         {
-            var equipment = _context.Equipment.Where(u => u.EquipmentId == equipments.EquipmentId).FirstOrDefault();
+            var equipment = _context.Equipment.Where(u => u.EquipmentName == equipments.EquipmentName).FirstOrDefault();
             if (equipment == null)
             {
-                return Ok("Equipments Not Available");
+                return Ok("NotAvailable");
             }
 
-            equipment.EquipmentName = equipments.EquipmentName;
+            //equipment.EquipmentName = equipments.EquipmentName;
             equipment.PartId = equipments.PartId;
             equipment.EquipmentCategoryId = equipments.EquipmentCategoryId;
             equipment.EquipmentGroupId = equipments.EquipmentGroupId;
@@ -69,7 +69,7 @@ namespace ElectronicEquipment.Controllers
             var equipment = _context.Equipment.Where(u => u.EquipmentId == id).FirstOrDefault();
             if (equipment == null)
             {
-                return Ok("Equipment Not Available");
+                return Ok("NotAvailable");
             }
             _context.Equipment.Remove(equipment);
             _context.SaveChanges();

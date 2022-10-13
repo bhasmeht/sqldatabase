@@ -8,6 +8,7 @@ namespace ElectronicEquipment.Models
         public int UserId { get; set; }
         [Required(ErrorMessage ="Please Enter UserName")]
         
+        
         public string UserName { get; set; }
         [Required(ErrorMessage ="Please Enter Password")]
         [MinLength(8,ErrorMessage ="Length of Password must be atleast 8 character long")]
